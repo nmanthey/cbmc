@@ -1,4 +1,4 @@
-# CBMC packages
+# CBMC packages 
 
 This project builds installation packages for the tip of the develop
 branch for MacOS, Windows, and Ubuntu.
