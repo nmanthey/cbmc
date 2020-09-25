@@ -30,8 +30,6 @@ jobs:
         run: git clone git://xenbits.xen.org/xen.git xen_4_13 && cd xen_4_13 && git reset --hard RELEASE-4.13.0
       - name: compile Xen with CBMC via one-line-scan
         run: |
-          ls
-          pwd
           ls src/goto-cc/goto-cc
           ln -s src/goto-cc/goto-cc src/goto-cc/goto-ld
           ln -s src/goto-cc/goto-cc src/goto-cc/goto-as
