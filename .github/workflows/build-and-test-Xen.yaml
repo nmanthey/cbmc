@@ -28,11 +28,14 @@ jobs:
         run: git clone -b path-addition https://github.com/awslabs/one-line-scan.git
       - name: get Xen 4.13
         run: git clone git://xenbits.xen.org/xen.git xen_4_13 && cd xen_4_13 && git reset --hard RELEASE-4.13.0
-      - name: compile Xen with CBMC via one-line-scan
+      - name: prepare compile Xen with CBMC via one-line-scan
         run: |
-          ls src/goto-cc/goto-cc
           ln -s src/goto-cc/goto-cc src/goto-cc/goto-ld
           ln -s src/goto-cc/goto-cc src/goto-cc/goto-as
           ln -s src/goto-cc/goto-cc src/goto-cc/goto-g++
-          one-line-scan/one-line-scan --add-to-path src/cbmc --add-to-path src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- env
-          one-line-scan/one-line-scan --add-to-path src/cbmc --add-to-path src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- make -C xen xen -j $(nproc) -k 
+      - name: check links for compile Xen with CBMC via one-line-scan
+        run: ls src/goto-cc/goto-cc
+      - name: check compile Xen with CBMC via one-line-scan
+        run: one-line-scan/one-line-scan --add-to-path src/cbmc --add-to-path src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- env
+      - name: compile Xen with CBMC via one-line-scan
+        run: one-line-scan/one-line-scan --add-to-path src/cbmc --add-to-path src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- make -C xen xen -j $(nproc) -k 
