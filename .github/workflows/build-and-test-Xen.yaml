@@ -34,8 +34,8 @@ jobs:
           ln -s src/goto-cc/goto-cc src/goto-cc/goto-as
           ln -s src/goto-cc/goto-cc src/goto-cc/goto-g++
       - name: check links for compile Xen with CBMC via one-line-scan
-        run: ls src/goto-cc/goto-cc
+        run: ls src/goto-cc
       - name: check compile Xen with CBMC via one-line-scan
-        run: one-line-scan/one-line-scan --add-to-path src/cbmc --add-to-path src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- env
+        run: one-line-scan/one-line-scan --add-to-path src/cbmc --add-to-path src/goto-cc --no-analysis --no-gotocc --plain --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- env
       - name: compile Xen with CBMC via one-line-scan
         run: one-line-scan/one-line-scan --add-to-path src/cbmc --add-to-path src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- make -C xen xen -j $(nproc) -k 
