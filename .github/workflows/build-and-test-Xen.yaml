@@ -44,4 +44,4 @@ jobs:
       - name: check goto-diff
         run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --no-gotocc --plain --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- which goto-diff
       - name: compile Xen with CBMC via one-line-scan
-        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- make -C xen -j $(nproc) -k
+        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- make -C xen_4_13 xen -j $(nproc) -k
