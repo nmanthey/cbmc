@@ -27,21 +27,13 @@ jobs:
       - name: get one-line-scan
         run: git clone -b path-addition https://github.com/awslabs/one-line-scan.git
       - name: get Xen 4.13
-        run: git clone git://xenbits.xen.org/xen.git xen_4_13 && cd xen_4_13 && git reset --hard RELEASE-4.13.0
+        run: git clone git://xenbits.xen.org/xen.git xen_4_13 && cd xen_4_13 && git reset --hard RELEASE-4.13.0 && pwd
       - name: prepare compile Xen with CBMC via one-line-scan
         run: |
           ln -s goto-cc src/goto-cc/goto-ld
           ln -s goto-cc src/goto-cc/goto-as
           ln -s goto-cc src/goto-cc/goto-g++
-      - name: check links for compile Xen with CBMC via one-line-scan
-        run: ls -l src/goto-cc
-      - name: check compile Xen with CBMC via one-line-scan
-        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --no-gotocc --plain --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- env
-      - name: check goto-ld
-        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --no-gotocc --plain --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- which goto-ld
-      - name: check goto-as
-        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --no-gotocc --plain --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- which goto-as
-      - name: check goto-diff
-        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --no-gotocc --plain --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- which goto-diff
-      - name: compile Xen with CBMC via one-line-scan
-        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- make -C xen_4_13 xen -j $(nproc) -k
+      - name: compile Xen with CBMC via one-line-scan, and check for goto-cc section
+        run: one-line-scan/one-line-scan --add-to-path $(pwd)/src/cbmc --add-to-path $(pwd)/src/goto-diff --add-to-path $(pwd)/src/goto-cc --no-analysis --trunc-existing --extra-cflags -Wno-error -o CPROVER -j 3 -- make -C xen_4_13 xen -j $(nproc) -k || true
+      - name: check for goto-cc section in xen-syms binary
+        run: objdump -h xen_4_13/xen/xen-syms | grep "goto-cc"
