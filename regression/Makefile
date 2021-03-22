@@ -10,6 +10,10 @@ DIRS = cbmc \
        cbmc-concurrency \
        cbmc-cover \
        cbmc-incr-oneloop \
+       cbmc-incr \
+       cbmc-with-incr \
+       array-refinement-with-incr \
+       goto-instrument-wmm-core \
        goto-instrument-typedef \
        smt2_solver \
        smt2_strings \
@@ -42,6 +46,7 @@ DIRS = cbmc \
        cbmc-primitives \
        goto-interpreter \
        cbmc-sequentialization \
+			 cpp-linter \
        # Empty last line
 
 ifeq ($(OS),Windows_NT)
